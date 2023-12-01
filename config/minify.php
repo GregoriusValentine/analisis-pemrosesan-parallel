@@ -24,7 +24,7 @@ return [
     | Default: true
     |
     */
-    'enabled' => env('MINIFY_ENABLED', true),
+    'enabled' => env('MINIFY_ENABLED', false),
 
     /*
     |--------------------------------------------------------------------------
@@ -83,7 +83,7 @@ return [
     | Default: false
     |
     */
-    'obfuscate' => env('MINIFY_OBFUSCATE', true),
+    'obfuscate' => env('MINIFY_OBFUSCATE', false),
 
     /*
     |--------------------------------------------------------------------------
