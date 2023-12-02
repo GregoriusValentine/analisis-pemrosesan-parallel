@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enum\ResearchTypeEnum;
 use App\Models\Research;
+use Illuminate\Http\JsonResponse;
 
 class DashboardController extends Controller
 {
@@ -14,7 +15,7 @@ class DashboardController extends Controller
         ]);
     }
 
-    public function scoreBoxStatistic()
+    public function scoreBoxStatistic(): JsonResponse
     {
         $research = Research::all();
         $score = collect([
