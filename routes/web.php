@@ -12,6 +12,7 @@ Route::get('/', function () {
 Route::controller(DashboardController::class)->prefix('dashboard')->group(function () {
     Route::get('/', 'index')->name('dashboard.index');
     Route::get('/score-box/8732y8hef83tn38vt', 'scoreBoxStatistic')->name('dashboard.scorebox');
+    Route::get('/chat_stat/sfd8ew7tofnfwu', 'chartStat')->name('dashboard.chart');
 });
 
 Route::controller(ResearchController::class)->prefix('research')->group(function () {
@@ -23,5 +24,5 @@ Route::controller(ResearchController::class)->prefix('research')->group(function
 Route::controller(ResultController::class)->prefix('result')->group(function () {
     Route::get('/', 'index')->name('result.index');
     Route::get('/all/data/hayr732gryasdaequih4q', 'researchData')->name('result.data.all');
-    Route::get('/delete/all/hayr732gryasdaequih4q', 'destroyAllData')->name('result.delete.all');
+    Route::delete('/reset', 'destroyAllData')->name('result.delete.all');
 });

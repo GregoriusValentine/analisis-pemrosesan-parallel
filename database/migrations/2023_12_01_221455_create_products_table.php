@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer('type');
             $table->decimal('selling_price', 16, 6)->nullable();
             $table->text('description')->nullable();
+            $table->enum('type_research', ['parallel', 'basic']);
             $table->timestamps();
         });
     }

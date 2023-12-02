@@ -62,37 +62,43 @@
             if ($('.alert').length > 0) {
                 setTimeout(() => {
                     $('.alert').remove();
-                }, 10000);
+                }, 15000);
             }
         }
-        function counter(){
-            var counter = 0;
+        function counter(init = 0){
+            var counter = init;
             var interval = setInterval(function() {
                 counter++;
-                $('.counter').text(counter);
+                console.log(counter);
+                $('.counter').html(counter);
             }, 1000);
+
+            return interval;
         }
+        
         $(document).on('click', '#parallelForm button[type="submit"]', function(e){
             e.preventDefault();
             let realButton = $(this)[0];
             let formData = new FormData();
             formData.append('file', $('#parallelForm input[type=file]')[0].files[0]); 
             $('.prlBtn').html(spinnerButton('Saving'));
-            counter();
+            let interval = counter(0);
             disabledButtons();
             Ajax.postWithFile(`{{ route('research.store.parallel') }}`, formData, 
                 (response) => {
                     $('.prlBtn').html(realButton);
-                    $('.alertParallelContainer').html(alertSuccess('Berhasil!', `Berhasil import data dengan waktu ${response.execution_time} detik.`))
+                    $('.alertParallelContainer').html(alertSuccess('', `Berhasil import data dengan waktu ${response.execution_time} detik.`))
                     ativateButtons();
                     resetAlert();
                     $('#parallelForm')[0].reset();
+                    clearInterval(interval);
                 },
                 (error) => {
                     $('.prlBtn').html(realButton);
                     ativateButtons();
-                    $('.alertParallelContainer').html(alertDanger('Failed!',error?.responseJSON?.errors?.file[0]))
+                    $('.alertParallelContainer').html(alertDanger('',error?.responseJSON?.errors?.file[0] ?? 'Error memory limit!'))
                     resetAlert();
+                    clearInterval(interval);
                 }
             );
         });
@@ -104,26 +110,26 @@
             let formData = new FormData();
             formData.append('file', $('#basicForm input[type=file]')[0].files[0]);
             $('.bscBtn').html(spinnerButton('Saving'));
-            counter();
+            let interval = counter(0);
             disabledButtons();
             Ajax.postWithFile(`{{ route('research.store.basic') }}`, formData, 
                 (response) => {
                     $('.bscBtn').html(realButton);
-                    $('.alertBasicContainer').html(alertSuccess('Berhasil!', `Berhasil import data dengan waktu ${response?.execution_time} detik.`))
+                    $('.alertBasicContainer').html(alertSuccess('', `Berhasil import data dengan waktu ${response?.execution_time} detik.`))
                     ativateButtons();
                     resetAlert();
                     $('#basicForm')[0].reset();
+                    clearInterval(interval);
                 },
                 (error) => {
                     $('.bscBtn').html(realButton);
                     ativateButtons();
-                    $('.alertBasicContainer').html(alertDanger('Failed!',error?.responseJSON?.errors?.file[0]))
+                    $('.alertBasicContainer').html(alertDanger('',error?.responseJSON?.errors?.file[0]))
                     resetAlert();
+                    clearInterval(interval);
                 }
             );
         });
-
-        
     });
 </script>
 @endpush

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Research;
+use Illuminate\Http\Request;
 use App\Enum\ResearchTypeEnum;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 class ResultController extends Controller
 {
@@ -66,10 +68,36 @@ class ResultController extends Controller
         return Research::query()->where('type', ResearchTypeEnum::PARALLEL->value)->get();
     }
 
-    public function destroyAllData()
+    public function destroyAllData(Request $request)
     {
-        DB::table('research')->truncate();
-        DB::table('products')->truncate();
-        return back();
+        if ($request->has('confirm_key')) {
+            if (is_null($request->confirm_key)) {
+                return response()->json([
+                    'message' => 'Kode reset tidak boleh kosong!'
+                ], 400);
+            }
+
+            if ($request->confirm_key !== env('RESET_DATA_KEY')) {
+                return response()->json([
+                    'message' => 'Kode reset salah!'
+                ], 400);
+            }
+
+            DB::table('research')->truncate(); # hapus data research
+            DB::table('products')->truncate(); # hapus data products
+
+            if (File::exists('product_imports')) File::deleteDirectory('product_imports');
+            if (File::exists('product_imports_parallel')) File::deleteDirectory('product_imports_parallel');
+
+            return response()->json([
+                'message' => 'Berhasil reset semua data!'
+            ]);
+        } else {
+            if (is_null($request->confirm_key)) {
+                return response()->json([
+                    'message' => 'Kode reset diperlukan!'
+                ], 400);
+            }
+        }
     }
 }

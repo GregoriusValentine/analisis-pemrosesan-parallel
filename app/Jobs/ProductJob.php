@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Enum\ResearchTypeEnum;
 use App\Models\Product;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -32,6 +33,7 @@ class ProductJob implements ShouldQueue
                     'type' => $item['type'],
                     'selling_price' => $item['selling_price'],
                     'description' => $item['description'],
+                    'type_research' => ResearchTypeEnum::PARALLEL->value,
                 ]);
             }
         }
