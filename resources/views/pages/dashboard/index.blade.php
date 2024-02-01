@@ -41,7 +41,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="w-full md:w-1/2 xl:w-1/3 p-3">
                     <div class="bg-white border rounded shadow p-2">
                         <div class="flex flex-row items-center">
@@ -135,7 +135,7 @@
                             "borderColor": "rgb(255, 99, 132)",
                             "lineTension": 0.1
                         },
-                        {   
+                        {
                             "label": "",
                             "data": [],
                             "fill": false,
@@ -156,7 +156,7 @@
                         }]
                     }
                 });
-                Ajax.get(`{{ route('dashboard.scorebox') }}`, 
+                Ajax.get(`{{ route('dashboard.scorebox') }}`,
                     (response) => {
                         for (const [key, value] of Object.entries(JSON.parse(response))) {
                             $(`.${key}`).html(`${value}`);
@@ -171,7 +171,7 @@
                         let res = JSON.parse(response);
                         chartpie.data.datasets[0].data.push(res.pie.dataPar, res.pie.dataBas);
                         chartpie.update();
-    
+
                         chart2line.data.labels.push(...res.line.labels);
                         chart2line.data.datasets[0].data.push(...res.line.datasets.basic.data);
                         chart2line.data.datasets[1].data.push(...res.line.datasets.parallel.data);
@@ -179,7 +179,7 @@
                         chart2line.data.datasets[1].label = res.line.datasets.parallel.label;
                         chart2line.update();
 
-                         $('.rf-button').html(`<button id="refresh" type="button" class="bg-green-600 text-white px-3 py-2 text-sm rounded mb-3">Refresh</button>`);
+                        $('.rf-button').html(`<button id="refresh" type="button" class="bg-green-600 text-white px-3 py-2 text-sm rounded mb-3">Refresh</button>`);
                     },
                     (error) => {
                         console.error(error);
